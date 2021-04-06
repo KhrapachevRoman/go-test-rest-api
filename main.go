@@ -1,7 +1,6 @@
 package main
 
 import (
-	"fmt"
 	"log"
 	"os"
 
@@ -19,26 +18,7 @@ func init() {
 func main() {
 	app := App{}
 
-	// Get the APP_DB_USERNAME environment variable
-	appdbUserName, exists := os.LookupEnv("APP_DB_USERNAME")
-
-	if exists {
-		fmt.Println(appdbUserName)
-	}
-
-	// Get the APP_DB_PASSWORD environment variable
-	appdbUserPassword, exists := os.LookupEnv("APP_DB_PASSWORD")
-
-	if exists {
-		fmt.Println(appdbUserPassword)
-	}
-
-	// Get the APP_DB_NAME environment variable
-	appdbName, exists := os.LookupEnv("APP_DB_NAME")
-
-	if exists {
-		fmt.Println(appdbName)
-	}
+	appdbUserName, appdbUserPassword, appdbName := getEnvVars()
 
 	app.Initialize(
 		os.Getenv(appdbUserName),

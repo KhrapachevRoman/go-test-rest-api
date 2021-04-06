@@ -9,26 +9,7 @@ import (
 var app App
 
 func TestMain(m *testing.M) {
-	// Get the APP_DB_USERNAME environment variable
-	appdbUserName, exists := os.LookupEnv("APP_DB_USERNAME")
-
-	if !exists {
-		log.Fatal("No APP_DB_USERNAME in .env file found")
-	}
-
-	// Get the APP_DB_PASSWORD environment variable
-	appdbUserPassword, exists := os.LookupEnv("APP_DB_PASSWORD")
-
-	if !exists {
-		log.Fatal("No APP_DB_PASSWORD in .env file found")
-	}
-
-	// Get the APP_DB_NAME environment variable
-	appdbName, exists := os.LookupEnv("APP_DB_NAME")
-
-	if !exists {
-		log.Fatal("No APP_DB_NAME in .env file found")
-	}
+	appdbUserName, appdbUserPassword, appdbName := getEnvVars()
 
 	// Init app
 	app.Initialize(

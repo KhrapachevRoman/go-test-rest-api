@@ -2,7 +2,6 @@ package main
 
 import (
 	"log"
-	"os"
 
 	"github.com/joho/godotenv"
 )
@@ -16,14 +15,12 @@ func init() {
 }
 
 func main() {
-	app := App{}
-
 	appdbUserName, appdbUserPassword, appdbName := getEnvVars()
-
+	app := App{}
 	app.Initialize(
-		os.Getenv(appdbUserName),
-		os.Getenv(appdbUserPassword),
-		os.Getenv(appdbName))
+		appdbUserName,
+		appdbUserPassword,
+		appdbName)
 
 	app.Run(":8889")
 }

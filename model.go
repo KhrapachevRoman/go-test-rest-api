@@ -2,6 +2,8 @@ package main
 
 import (
 	"database/sql"
+
+	_ "github.com/go-sql-driver/mysql"
 )
 
 // Struct to represent the `product`
@@ -16,7 +18,8 @@ type product struct {
 // Get a product from the database by id
 func (p *product) getProduct(db *sql.DB) error {
 	//return errors.New("Not implemented")
-	return db.QueryRow("SELECT name, price FROM products WHERE id=?", p.ID).Scan(&p.Name, &p.Price)
+	row := db.QueryRow("SELECT name, price FROM products WHERE id=?", p.ID)
+	return row.Scan(&p.Name, &p.Price)
 }
 
 // Update a product in the database by id
@@ -33,11 +36,17 @@ func (p *product) deleteProduct(db *sql.DB) error {
 
 // Create a product in the database
 func (p *product) createProduct(db *sql.DB) error {
-	err := db.QueryRow("INSERT INTO products(name, price) VALUES(?,?) RETURNING id",
-		p.Name, p.Price).Scan(&p.ID)
+	result, err := db.Exec("INSERT INTO products (`name`, `price`) VALUES (?, ?)", p.Name, p.Price)
+
 	if err != nil {
 		return err
 	}
+
+	lastID, err := result.LastInsertId()
+	if err != nil {
+		return err
+	}
+	p.ID = int(lastID)
 	return nil
 }
 

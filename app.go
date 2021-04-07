@@ -55,6 +55,7 @@ func (a *App) getProduct(w http.ResponseWriter, r *http.Request) {
 		default:
 			respondWithError(w, http.StatusInternalServerError, err.Error())
 		}
+		return
 	}
 	respondWithJSON(w, http.StatusOK, p)
 }
@@ -102,7 +103,7 @@ func (a *App) createProduct(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	respondWithJSON(w, http.StatusOK, p)
+	respondWithJSON(w, http.StatusCreated, p)
 }
 
 // Handler for the route that update a product
@@ -169,8 +170,10 @@ func respondWithError(w http.ResponseWriter, code int, message string) {
 
 // Func to process Func to process normal responses
 func respondWithJSON(w http.ResponseWriter, code int, payload interface{}) {
-	response, _ := json.Marshal(payload)
-
+	response, err := json.Marshal(payload)
+	if err != nil {
+		log.Fatal(" Can't marshal payload")
+	}
 	w.Header().Set("Content-Type", "application/json")
 	w.WriteHeader(code)
 	w.Write(response)

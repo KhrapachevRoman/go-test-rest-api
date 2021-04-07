@@ -22,5 +22,5 @@ func main() {
 		appdbUserPassword,
 		appdbName)
 
-	app.Run(":8889")
+	app.Run(":8010")
 }

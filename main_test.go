@@ -38,7 +38,7 @@ func ensureTableExists() {
 // Delete all records from the products
 func clearTable() {
 	app.DB.Exec("DELETE FROM products")
-	app.DB.Exec("ALTER SEQUENCE products_id_seq RESTART WITH 1")
+	app.DB.Exec("ALTER TABLE products AUTO_INCREMENT = 1")
 }
 
 const tableCreationQuery = `CREATE TABLE IF NOT EXISTS products
@@ -200,7 +200,7 @@ func addProducts(count int) {
 	}
 
 	for i := 0; i < count; i++ {
-		app.DB.Exec("INSERT INTO products(name, price) VALUES($1, $2)", "Product "+strconv.Itoa(i), (i+1.0)*10)
+		app.DB.Exec("INSERT INTO products(name, price) VALUES(?, ?)", "Product "+strconv.Itoa(i), (i+1.0)*10)
 	}
 }
 

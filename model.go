@@ -12,21 +12,26 @@ type product struct {
 }
 
 // Functions that deal with a single product as methods on struct `product`
+
+// Get a product from the database by id
 func (p *product) getProduct(db *sql.DB) error {
 	//return errors.New("Not implemented")
 	return db.QueryRow("SELECT name, price FROM products WHERE id=?", p.ID).Scan(&p.Name, &p.Price)
 }
 
+// Update a product in the database by id
 func (p *product) updateProduct(db *sql.DB) error {
 	_, err := db.Exec("UPDATE products SET name=?, price=? WHERE id=?", p.Name, p.Price, p.ID)
 	return err
 }
 
+// Delete a product in the database by id
 func (p *product) deleteProduct(db *sql.DB) error {
 	_, err := db.Exec("DELETE FROM products WHERE id=?", p.ID)
 	return err
 }
 
+// Create a product in the database, return new `id`
 func (p *product) createProduct(db *sql.DB) error {
 	err := db.QueryRow("INSERT INTO products(name, price) VALUES(?,?) RETURNING id",
 		p.Name, p.Price).Scan(&p.ID)

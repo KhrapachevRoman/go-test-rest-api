@@ -31,7 +31,7 @@ func (p *product) deleteProduct(db *sql.DB) error {
 	return err
 }
 
-// Create a product in the database, return new `id`
+// Create a product in the database
 func (p *product) createProduct(db *sql.DB) error {
 	err := db.QueryRow("INSERT INTO products(name, price) VALUES(?,?) RETURNING id",
 		p.Name, p.Price).Scan(&p.ID)
